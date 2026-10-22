@@ -1,6 +1,6 @@
 # opam-workerd
 
-The opam package `workerd`. It installs the prebuilt [workerd](https://github.com/cloudflare/workerd) binary from Cloudflare, so you do not need `npm install`. It does not build workerd from source (since workerd needs Bazel)
+The opam package `workerd`. It installs the prebuilt [workerd](https://github.com/cloudflare/workerd) binary from Cloudflare.
 
 ## Install
 
