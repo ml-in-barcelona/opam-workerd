@@ -18,11 +18,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: ocaml/setup-ocaml@v3
+      - uses: ml-in-barcelona/gh-ci-action@v1.1.0
         with:
           ocaml-compiler: 5.4.0
-
-      - run: opam install dune-release -y
+          extra-packages: dune-release
 
       - uses: davesnx/dune-release-action@v0.5.0
         with:
