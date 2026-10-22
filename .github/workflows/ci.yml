@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: Lint and install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.4.0
+
+      - run: opam install dune-release -y
+
+      - uses: davesnx/dune-release-action/lint@v0.5.0
+        with:
+          packages: workerd
+
+      - name: Install workerd
+        run: opam install ./workerd.opam -y
+
+      - name: Run workerd
+        run: opam exec -- workerd --version
+
+      - name: Check the scripts
+        working-directory: scripts
+        run: |
+          npm ci
+          npm run check
